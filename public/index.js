@@ -1,6 +1,6 @@
 const url = new URL(window.location.href);
 const websocket = new WebSocket(
-	`ws${url.protocol === 'https' ? 's' : ''}://${url.host}`
+	`ws${url.protocol === 'https:' ? 's' : ''}://${url.host}`
 );
 
 document.querySelector('#password-submit').addEventListener('click', event => {

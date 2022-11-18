@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+	<head>
+		<meta charset="utf-8" />
+		<title>Remote LED control interface</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- UIkit CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/uikit@3.15.13/dist/css/uikit.min.css"
+		/>
+
+		<!-- UIkit JS -->
+		<script src="https://cdn.jsdelivr.net/npm/uikit@3.15.13/dist/js/uikit.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/uikit@3.15.13/dist/js/uikit-icons.min.js"></script>
+
+		<!-- Self CSS -->
+		<link rel="stylesheet" href="index.css" />
+	</head>
+	<body>
+		<div class="main-container">
+			<div class="auth-container">
+				<div class="uk-card uk-card-default uk-card-body uk-width-auto">
+					<legend class="uk-legend">Authenticate</legend>
+					<span class="uk-text-meta">Enter password to continue</span>
+					<div class="uk-inline">
+						<input type="password" class="uk-input" id="password" />
+						<a
+							class="uk-form-icon uk-form-icon-flip"
+							uk-icon="arrow-right"
+							id="password-submit"
+						></a>
+					</div>
+				</div>
+			</div>
+			<div class="buttons-container hidden">
+				<div class="remote-buttons">
+					<!-- Row 1-->
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="chevron-up"
+						data-code="KEY_BRIGHTNESSUP"
+					></span>
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="chevron-down"
+						data-code="KEY_BRIGHTNESSDOWN"
+					></span>
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="chevron-right"
+						data-code="KEY_NEXT"
+					></span>
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="bolt"
+						data-code="KEY_POWER"
+					></span>
+					<!-- Row 2-->
+					<span
+						class="uk-icon-button remote-button remote-button-top"
+						data-code="KEY_F1"
+						>R</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-top"
+						data-code="KEY_F2"
+						>G</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-top"
+						data-code="KEY_F3"
+						>B</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-top"
+						data-code="KEY_F4"
+						>W</span
+					>
+					<!-- Row 3-->
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F5"
+						style="color: orangered"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F6"
+						style="color: #1fff1f"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F7"
+						style="color: #3897ea"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F8"
+						style="color: #c7a1a7"
+						>🞉</span
+					>
+					<!-- Row 4-->
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F9"
+						style="color: orange"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F10"
+						style="color: #38fff2"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F11"
+						style="color: #660586"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F12"
+						style="color: #c7a1c5"
+						>🞉</span
+					>
+					<!-- Row 5-->
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F13"
+						style="color: goldenrod"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F14"
+						style="color: #59ece2"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F15"
+						style="color: #8004aa"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F16"
+						style="color: #7eeff3"
+						>🞉</span
+					>
+					<!-- Row 6-->
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F17"
+						style="color: yellow"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F18"
+						style="color: #078da2"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F19"
+						style="color: #e263d8"
+						>🞉</span
+					>
+					<span
+						class="uk-icon-button remote-button remote-button-circle"
+						data-code="KEY_F20"
+						style="color: #91def6"
+						>🞉</span
+					>
+					<!-- Row 7-->
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="arrow-up"
+						data-code="KEY_FN_F1"
+						style="color: red"
+					></span>
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="arrow-up"
+						data-code="KEY_FN_F2"
+						style="color: green"
+					></span>
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="arrow-up"
+						data-code="KEY_FN_F3"
+						style="color: blue"
+					></span>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_FN_F4"
+						>QUICK</span
+					>
+					<!-- Row 8-->
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="arrow-down"
+						data-code="KEY_FN_F5"
+						style="color: red"
+					></span>
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="arrow-down"
+						data-code="KEY_FN_F6"
+						style="color: green"
+					></span>
+					<span
+						class="uk-icon-button remote-button"
+						uk-icon="arrow-down"
+						data-code="KEY_FN_F7"
+						style="color: blue"
+					></span>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_FN_F8"
+						>SLOW</span
+					>
+					<!-- Row 9-->
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_FN_F9"
+						>DIY1</span
+					>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_FN_F10"
+						>DIY2</span
+					>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_FN_F11"
+						>DIY3</span
+					>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_FN_F12"
+						>AUTO</span
+					>
+					<!-- Row 10-->
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_KP0"
+						>DIY4</span
+					>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_KP1"
+						>DIY5</span
+					>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_KP2"
+						>DIY6</span
+					>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_KP3"
+						>FLASH</span
+					>
+					<!-- Row 11-->
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_KP4"
+						>JUMP3</span
+					>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_KP5"
+						>JUMP7</span
+					>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_KP6"
+						>FADE3</span
+					>
+					<span
+						class="uk-icon-button remote-button"
+						data-code="KEY_KP7"
+						>FADE7</span
+					>
+				</div>
+			</div>
+		</div>
+		<!-- Self JS -->
+		<script src="index.js"></script>
+	</body>
+</html>

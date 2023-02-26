@@ -1,6 +1,7 @@
 import express, { static as serveStatic } from 'express';
 import { Server, WebSocket } from 'ws';
 import { join } from 'path';
+import { verify, sign } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import totp from 'totp-generator';
 
@@ -10,7 +11,6 @@ interface socketStatus {
 	socket: WebSocket;
 	timer: NodeJS.Timeout;
 	isAlive: boolean;
-	isAuthenticated: boolean;
 	type: 'server' | 'client';
 }
 
@@ -35,7 +35,6 @@ wss.on('connection', socket => {
 				socket.ping();
 			}
 		}, 15000),
-		isAuthenticated: false,
 		type: 'client',
 	});
 	socket.on('pong', () => {
@@ -74,14 +73,27 @@ wss.on('connection', socket => {
 			const otp2 = totp(process.env.TOTP_KEY, {
 				timestamp: Date.now() - 30000,
 			});
-			if (message.otp == otp1 || message.otp == otp2) {
+			if (message.payload.otp == otp1 || message.payload.otp == otp2) {
 				const thisSocket = webSocketStatuses.find(
 					status => status.socket === socket
 				);
 				if (thisSocket) {
-					thisSocket.isAuthenticated = true;
 					socket.send(
-						JSON.stringify({ type: 'authenticate', response: 'ok' })
+						JSON.stringify({
+							type: 'authenticate',
+							response: 'ok',
+							payload: {
+								jwt: sign(
+									{
+										uuid: message.payload.uuid,
+									},
+									process.env.JWT_KEY,
+									{
+										expiresIn: '3d',
+									}
+								),
+							},
+						})
 					);
 				}
 			} else {
@@ -92,35 +104,57 @@ wss.on('connection', socket => {
 					})
 				);
 			}
-		} else if (message.type === 'command') {
-			const thisSocket = webSocketStatuses.find(
-				status => status.socket === socket
-			);
-			if (thisSocket.isAuthenticated) {
-				webSocketStatuses
-					.filter(socket => socket.type === 'server')
-					.forEach(socket =>
-						socket.socket.send(
-							JSON.stringify({
-								type: 'command',
-								code: message.code,
-							})
-						)
+		} else if (message.type === 'reauthenticate') {
+			verify(message.payload.jwt, process.env.JWT_KEY, error => {
+				if (error) {
+					socket.send(
+						JSON.stringify({
+							type: 'reauthenticate',
+							response: 'not_authenticated',
+						})
 					);
-				socket.send(
-					JSON.stringify({
-						type: 'command',
-						response: 'ok',
-					})
-				);
-			} else {
-				socket.send(
-					JSON.stringify({
-						type: 'command',
-						response: 'not_authenticated',
-					})
-				);
-			}
+				} else {
+					socket.send(
+						JSON.stringify({
+							type: 'reauthenticate',
+							response: 'ok',
+							payload: {
+								jwt: sign(
+									{
+										uuid: message.payload.uuid,
+									},
+									process.env.JWT_KEY,
+									{
+										expiresIn: '3d',
+									}
+								),
+							},
+						})
+					);
+				}
+			});
+		} else if (message.type === 'command') {
+			verify(message.payload.jwt, process.env.JWT_KEY, error => {
+				if (error) {
+					socket.send(
+						JSON.stringify({
+							type: 'command',
+							response: 'not_authenticated',
+						})
+					);
+				} else {
+					webSocketStatuses
+						.filter(socket => socket.type === 'server')
+						.forEach(socket =>
+							socket.socket.send(
+								JSON.stringify({
+									type: 'command',
+									code: message.payload.code,
+								})
+							)
+						);
+				}
+			});
 		}
 	});
 });
